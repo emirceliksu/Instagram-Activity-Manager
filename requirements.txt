@@ -1,0 +1,7 @@
+instagrapi
+rich
+selenium
+deep-translator
+pyotp
+python-dotenv
+webdriver-manager
