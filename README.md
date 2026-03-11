@@ -21,7 +21,15 @@
 
 ---
 
-## 🛠️ Kurulum
+## 📥 İndir (Builds)
+Artık Python kurmakla uğraşmanıza gerek yok! İşletim sisteminize uygun hazır sürümleri **[Releases](https://github.com/emirceliksu/Instagram-Activity-Manager/releases)** sayfasından indirebilirsiniz:
+*   🪟 **Windows** (.exe)
+*   🍎 **macOS** (Mach-O)
+*   🐧 **Linux** (Binary)
+
+---
+
+## 🛠️ Kurulum & Çalıştırma
 
 ### 1. Gereksinimler
 *   Python 3.8+

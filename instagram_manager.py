@@ -3,6 +3,9 @@ import sys
 import subprocess
 
 def install_deps():
+    if getattr(sys, 'frozen', False):
+        return
+
     deps = ["instagrapi", "rich", "selenium", "deep-translator", "pyotp", "python-dotenv"]
     need_install = []
     
