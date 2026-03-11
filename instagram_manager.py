@@ -56,7 +56,6 @@ from instagrapi import Client
 from rich.console import Console
 from rich.panel import Panel
 
-# Local Imports
 from utils.language import LanguageManager
 from modules.likes import LikeManager
 from modules.comments import CommentManager
@@ -99,7 +98,6 @@ class InstagramActivityMaster(CleanerBase):
             browsers = self.tarayici_bul(self.ui['detect'])
             if not browsers: return False
             
-            # Simple auto-select first browser for now
             target = browsers[0]
             
             driver = None
@@ -132,12 +130,23 @@ class InstagramActivityMaster(CleanerBase):
         
         while self.calisiyor:
             logo = """
-    ____                 __                                 
-   /  _/___  _______  __/ /_  ____  ____  ____ _             
-   / // __ \/ ___/ / / / __ \/ __ \/ __ \/ __ `/             
- _/ // / / (__  ) /_/ / / / / /_/ / / / / /_/ /              
-/___/_/ /_/____/\__,_/_/ /_/\____/_/ /_/\__,_/               
-                                                             
+   __  __ _   _ _   _   _   __  __ __  ____  
+  |  \/  | | | | | | | / \ |  \/  |  \/  | ____| 
+  | |\/| | | | | |_| |/ _ \| |\/| | |\/| |  _|   
+  | |  | | |_| |  _  / ___ \ |  | | |  | | |___  
+  |_|  |_|_|\___/|_| |_/_/   \_\_|  |_|  |_|_____| 
+
+   _____ __  __ ___ ____  
+  | ____|  \/  |_ _|  _ \ 
+  |  _| | |\/| || || |_) |
+  | |___| |  | || ||  _ < 
+  |_____|_|  |_|___|_| \_\
+
+    ____ _____ _     ___ _  ______  _   _ 
+   / ___| ____| |   |_ _| |/ / ___|| | | |
+  | |   |  _| | |    | || ' /\___ \| | | |
+  | |___| |___| |___ | || . \ ___) | |_| |
+   \____|_____|_____|___|_|\_\____/ \___/ 
     """
             console.print(Panel.fit(f"[bold magenta]{logo}[/bold magenta]\n[bold white]{self.ui['title']}[/bold white]\n[dim]Created by {self.developer}[/dim]", border_style="cyan"))
             

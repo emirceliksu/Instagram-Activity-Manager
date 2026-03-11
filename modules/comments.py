@@ -27,7 +27,6 @@ class CommentManager:
             
             while True:
                 try:
-                    # Multi-language button detection
                     select_btn = driver.find_elements(By.XPATH, "//span[text()='Select' or text()='Seç' or text()='Seleccionar' or text()='Sélectionner']")
                     if not select_btn: break
                     select_btn[0].click()
