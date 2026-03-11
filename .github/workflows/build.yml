@@ -8,21 +8,27 @@ on:
 
 jobs:
   build:
-    name: Build for ${{ matrix.os }}
+    name: Build for ${{ matrix.os }} (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
-          - os: ubuntu-latest
-            artifact_name: InstagramManager-Linux
-            executable_path: dist/InstagramManager
           - os: windows-latest
-            artifact_name: InstagramManager-Windows.exe
-            executable_path: dist/InstagramManager.exe
+            arch: x64
+            artifact_name: InstagramManager-Windows-x64.zip
+            executable_name: InstagramManager.exe
+          - os: ubuntu-latest
+            arch: x64
+            artifact_name: InstagramManager-Linux-x64.tar.gz
+            executable_name: InstagramManager
+          - os: macos-13
+            arch: Intel-x64
+            artifact_name: InstagramManager-MacOS-Intel.tar.gz
+            executable_name: InstagramManager
           - os: macos-latest
-            artifact_name: InstagramManager-Mac
-            executable_path: dist/InstagramManager
+            arch: Apple-Silicon
+            artifact_name: InstagramManager-MacOS-ARM.tar.gz
+            executable_name: InstagramManager
 
     steps:
       - name: Checkout code
@@ -40,14 +46,30 @@ jobs:
           pip install pyinstaller
 
       - name: Build with PyInstaller
+        shell: bash
         run: |
-          pyinstaller --onefile --name "InstagramManager" --add-data "modules${{ matrix.os == 'windows-latest' && ';' || ':' }}modules" --add-data "utils${{ matrix.os == 'windows-latest' && ';' || ':' }}utils" --add-data "logo.png${{ matrix.os == 'windows-latest' && ';' || ':' }}." instagram_manager.py
+          pyinstaller --onefile --name "InstagramManager" \
+            --add-data "modules${{ matrix.os == 'windows-latest' && ';' || ':' }}modules" \
+            --add-data "utils${{ matrix.os == 'windows-latest' && ';' || ':' }}utils" \
+            --add-data "logo.png${{ matrix.os == 'windows-latest' && ';' || ':' }}." \
+            instagram_manager.py
+
+      - name: Compress Artifact (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist/InstagramManager.exe -DestinationPath dist/${{ matrix.artifact_name }}
+
+      - name: Compress Artifact (Unix)
+        if: matrix.os != 'windows-latest'
+        run: |
+          cd dist && tar -czvf ${{ matrix.artifact_name }} ${{ matrix.executable_name }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.artifact_name }}
-          path: ${{ matrix.executable_path }}
+          path: dist/${{ matrix.artifact_name }}
 
   release:
     needs: build
@@ -61,8 +83,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            InstagramManager-Linux/InstagramManager
-            InstagramManager-Windows.exe/InstagramManager.exe
-            InstagramManager-Mac/InstagramManager
+            */InstagramManager-Windows-x64.zip
+            */InstagramManager-Linux-x64.tar.gz
+            */InstagramManager-MacOS-Intel.tar.gz
+            */InstagramManager-MacOS-ARM.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
