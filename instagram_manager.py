@@ -129,7 +129,7 @@ class InstagramActivityMaster(CleanerBase):
         comments_mod = CommentManager(self.ui, self._browser_opener_factory())
         
         while self.calisiyor:
-            logo = """
+            logo = r"""
    __  __ _   _ _   _   _   __  __ __  ____  
   |  \/  | | | | | | | / \ |  \/  |  \/  | ____| 
   | |\/| | | | | |_| |/ _ \| |\/| | |\/| |  _|   
